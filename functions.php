@@ -66,4 +66,18 @@ function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
         return array('success' => false, 'error' => 'Unauthorized');
     }
 
+    $hospital = get_hospital_by_id($hospital_id);
+
+}
+function get_hospital_by_id($hospitalId) {
+    $query = "SELECT id FROM hospitals WHERE id = $hospitalId";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        return array('success' => false, 'error' => 'Failed to retrieve the hospital details');
+    }
+    $hospital = $result->fetch_assoc();
+    $conn->close();
+    return array('success' => true, 'data' => $hospital);
+}
 ?>
