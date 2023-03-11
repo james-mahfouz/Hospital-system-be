@@ -22,7 +22,6 @@ function register_user($name, $email, $password, $user_type){
 }
 
 function get_user_by_id($id){
-    echo "getting user id";
     global $conn;
 
     $stmt = $conn->prepare("SELECT u.id, u.name, u.email, t.name FROM users u INNER JOIN user_types t ON u.user_types_id = t.id WHERE u.id = ?");
@@ -59,5 +58,5 @@ function verifyJWT($jwt) {
     } catch (Exception $e) {
       return false;
     }
-  }
+}
 ?>
