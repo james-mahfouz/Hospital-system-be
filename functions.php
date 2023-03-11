@@ -63,11 +63,17 @@ function verifyJWT($jwt) {
 function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
     $decoded = verifyJWT($jwt);
     if (!$decoded || !isset($decoded->userId) || !isset($decoded->roles) || !in_array('admin', $decoded->roles)) {
-        return array('success' => false, 'error' => 'Unauthorized');
+        return false;
     }
 
     $hospital = get_hospital_by_id($hospital_id);
+    if (is_patient($patient_id, $hospital_id)) {
+        return false
+    }
 
+    $dateJoined = date('Y-m-d H:i:s');
+    $query = "INSERT INTO hospital_users (user_id, hospital_id, is_active, date_joined) VALUES ('$patientId', '$hospitalId', 1, '$dateJoined')";
+    return true;
 }
 function get_hospital_by_id($hospitalId) {
     global $conn;
