@@ -59,4 +59,11 @@ function verifyJWT($jwt) {
       return false;
     }
 }
+
+function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
+    $decoded = verifyJWT($jwt);
+    if (!$decoded || !isset($decoded->userId) || !isset($decoded->roles) || !in_array('admin', $decoded->roles)) {
+        return array('success' => false, 'error' => 'Unauthorized');
+    }
+
 ?>
