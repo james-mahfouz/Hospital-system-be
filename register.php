@@ -12,7 +12,7 @@ if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['role'])) 
     register_user($name, $email, $password, $user_type);
     echo $name . $password . $email . $user_type;
     $user = get_user_by_id($conn->insert_id);
-    $jwt = JWT::encode(array('id' => $user['id'], 'role' => $user['name']), 'secret_key', 'HS256');
+    $jwt = JWT::encode(array('id' => $user['id'], 'role' => $user['name']), 'user_key', 'HS256');
 
     $response = array(
         'status' => true,

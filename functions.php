@@ -1,6 +1,9 @@
 <?php
 
 require_once('connection.php');
+require_once('vendor/autoload.php');
+
+use \Firebase\JWT\JWT;
 
 function register_user($name, $email, $password, $user_type){
     
@@ -31,17 +34,16 @@ function get_user_by_id($id){
     return $user;
 }
 
-function login_user($name, $password){
+function login_user($email, $password){
     global $conn;
-    $stmt = $conn->prepare("SELECT id , password, user_types_id FROM users WHERE name =?");
-    $stmt->bind_param("s", $name);
+    $stmt = $conn->prepare("SELECT id , password, user_types_id FROM users WHERE email =?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
     if($result->num_rows == 1){
         $user = $result -> fetch_assoc();
         if(password_verify($password, $user['password'])){
-            $jwt = JWT::encode(array('id'=>$user['id'], 'role'=>$user['user_types_id']),'user_key');
-            return $jwt;
+            return array('id'=>$user['id'], 'role'=>$user['user_types_id']);
         }else {
             return false;
         }
@@ -49,4 +51,13 @@ function login_user($name, $password){
         return false;
     }
 }
+
+function verifyJWT($jwt) {
+    try {
+      $decoded = JWT::decode($jwt, 'user_key', array('HS256'));
+      return $decoded;
+    } catch (Exception $e) {
+      return false;
+    }
+  }
 ?>
