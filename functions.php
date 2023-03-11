@@ -70,6 +70,8 @@ function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
 
 }
 function get_hospital_by_id($hospitalId) {
+    global $conn;
+
     $query = "SELECT id FROM hospitals WHERE id = $hospitalId";
     $result = $conn->query($query);
 
@@ -80,4 +82,21 @@ function get_hospital_by_id($hospitalId) {
     $conn->close();
     return array('success' => true, 'data' => $hospital);
 }
+
+function is_patient($patientId, $hospitalId) {
+    global $conn;
+    $query = "SELECT * FROM hospital_users WHERE user_id = $patientId AND hospital_id = $hospitalId AND is_active = 1";
+    $result = $conn->query($query);
+    if (!$result) {
+        return false;
+    }
+    $query = "SELECT * FROM users WHERE id = $patientId AND is_active = 1";
+    $result = $conn->query($query);
+    if (!$result) {
+        return false;
+    }
+    $conn->close();
+    return true;
+}
+
 ?>
