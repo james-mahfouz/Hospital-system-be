@@ -1,15 +1,14 @@
 <?php
 require_once('functions.php');
 
-if (isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['role'])) {
-    $username = $_POST['username'];
+if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['role'])) {
+    $name = $_POST['name'];
     $password = $_POST['password'];
     $email = $_POST['email'];
-    $user_type = $_POST['role'];
-
-    registerUser($username, $password, $email, $user_type);
-
-    $user = getUserById($conn->insert_id);
+    $user_type = intval($_POST['role']);
+    register_user($name, $email, $password, $user_type);
+    echo $name . $password . $email . $user_type;
+    $user = get_user_by_id($conn->insert_id);
 
     $jwt = JWT::encode(array('id' => $user['id'], 'role' => $user['role']), 'mysecretkey');
 
@@ -18,7 +17,7 @@ if (isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['role'
         'message' => 'User registered successfully',
         'jwt' => $jwt
     );
-
+    
     echo json_encode($response);
     } else {
     $response = array(
