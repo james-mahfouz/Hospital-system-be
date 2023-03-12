@@ -5,13 +5,13 @@ require_once('vendor/autoload.php');
 
 use \Firebase\JWT\JWT;
 
-function register_user($name, $email, $password, $user_type){
+function register_user($name, $email, $password){
     
     global $conn;
+    $role =1;
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    echo "function enteres";
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, user_types_id) VALUES(?,?,?,?)" );
-    $stmt->bind_param("sssi", $name, $email, $hashed_password,$user_type);
+    $stmt->bind_param("sssi", $name, $email, $hashed_password,$role);
     $stmt->execute();
     if ($stmt->error) {
         die('Error: ' . $stmt->error);
