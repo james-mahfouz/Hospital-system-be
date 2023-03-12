@@ -24,7 +24,7 @@ function register_user($name, $email, $password){
 function get_user_by_id($id){
     global $conn;
 
-    $stmt = $conn->prepare("SELECT u.id, u.name, u.email, t.name FROM users u INNER JOIN user_types t ON u.user_types_id = t.id WHERE u.id = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -64,6 +64,7 @@ function verifyJWT($jwt) {
 function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
     global $conn;
     // $decoded = verifyJWT($jwt);
+    // var_dump($decoded);
     // if (!$decoded || !isset($decoded->userId) || !isset($decoded->roles) || !in_array('admin', $decoded->roles)) {
     //     return false;
     // }
