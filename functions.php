@@ -57,6 +57,7 @@ function verifyJWT($jwt) {
       var_dump($decoded);
       return $decoded;
     } catch (Exception $e) {
+        echo "Error decoding JWT: " . $e->getMessage();
         return false;
     }
 }
@@ -64,8 +65,9 @@ function verifyJWT($jwt) {
 function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
     global $conn;
     // $decoded = verifyJWT($jwt);
+    // echo $decoded;
     // var_dump($decoded);
-    // if (!$decoded || !isset($decoded->userId) || !isset($decoded->roles) || !in_array('admin', $decoded->roles)) {
+    // if (!in_array(1, $decoded->jwt)) {
     //     return false;
     // }
     $hospital = check_hospital($hospital_id);
@@ -79,7 +81,6 @@ function assign_patient_hospital($jwt, $patient_id, $hospital_id) {
     $dateJoined = date('Y-m-d H:i:s');
     $query = "INSERT INTO hospital_users (users_id, hospitals_id, is_active, date_joined) VALUES ('$patient_id', '$hospital_id', 1, '$dateJoined')";
     $result = $conn->query($query);
-    var_dump($result);
     return $result;
 }
 

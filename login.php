@@ -9,7 +9,7 @@ if (isset($_POST['email'], $_POST['password'])) {
     $password = $_POST['password'];
     $user = login_user($email, $password);
     if ($user) {
-        $jwt = JWT::encode(array('id' => $user['id'], 'role' => $user['role']), 'user_key','HS256');
+        $jwt = JWT::encode(array('id' => $user['id'], 'role' => $user['user_types_id']), 'user_key','HS256');
         $response = array(
             'status' => true,
             'message' => 'Login successful',

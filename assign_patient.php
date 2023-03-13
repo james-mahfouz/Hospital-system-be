@@ -11,7 +11,6 @@ if (isset($_POST['jwt'], $_POST['patient_id'], $_POST['hospital_id'])) {
     $success = assign_patient_hospital($jwt, $patient_id, $hospital_id);
 
     if ($success) {
-        
         $response = array('success' => true, 'message' => 'Patient assigned to hospital successfully');
     } else {
         $response = array('success' => false, 'message' => 'Failed to assign patient to hospital');
