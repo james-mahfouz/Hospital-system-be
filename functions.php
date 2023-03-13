@@ -8,7 +8,7 @@ use \Firebase\JWT\JWT;
 function register_user($name, $email, $password){
     
     global $conn;
-    $role =1;
+    $role =3;
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO users (name, email, password, user_types_id) VALUES(?,?,?,?)" );
     $stmt->bind_param("sssi", $name, $email, $hashed_password,$role);
